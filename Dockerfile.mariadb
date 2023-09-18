@@ -1,0 +1,4 @@
+# Use a imagem oficial do MARIADB como base
+FROM mariadb:latest
+
+
