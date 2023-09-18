@@ -1,0 +1,33 @@
+services:
+  - name: mariadb
+    env: .env
+    startCommand: ./start-mariadb.sh  # Replace with the actual start command for MariaDB
+    envVars:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    plan: starter
+    envVars:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_DATABASE}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+    privateEnvVars:
+      - DB_ROOT_PASSWORD
+      - DB_DATABASE
+      - DB_USER
+      - DB_PASSWORD
+    automaticHttps: false
+    automaticHttpRewrites: false
+    sourceRepo: # Define your source repository URL
+      type: github
+      repoName: https://github.com/paulospiguel/database_docker
+      branch: master
+    dockerfilePath: Dockerfile.mariadb
+    buildCommand: docker build -t my-mariadb .
+    startCommand: docker run -v database:/var/lib/mysql -p ${DB_PORT:-3306}:3306 my-mariadb
+
+addons:
+  volumes:
+    - name: database
